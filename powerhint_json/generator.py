@@ -66,7 +66,7 @@ def generate_powerhint_json(powerhints: List[PowerHint], path: str) -> None:
                     node: Node = {
                         'Name': node_name,
                         'Path': node_path,
-                        'Values': [current_value, value],
+                        'Values': [current_value, value] if current_value != value else [value],
                         'ResetOnInit': True,
                     }
                 nodes.append(node)
