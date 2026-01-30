@@ -40,7 +40,7 @@ def parse_boost_xml(filename: str) -> List[Boost]:
         perfboosts.append(
             Boost(
                 id=int(cfg.attrib['Id'], 0),
-                type=int(cfg.attrib.get('Type', "-1"), 0),
+                type=int(cfg.attrib.get('Type', '-1'), 0),
                 enable=cfg.attrib['Enable'].lower() == 'true',
                 timeout=int(cfg.attrib.get('Timeout', '-1'), 0),
                 target=parse_targets(cfg.attrib.get('Target', '')),

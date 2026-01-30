@@ -57,3 +57,10 @@ ResourceResolver = Callable[[ResourceContext], Iterable[ResolvedPair]]
 
 # Pair consisting of a node path and value, both processed
 ResourceCombiner = Callable[[List[str], str], str]
+
+
+@dataclass
+class PowerHint:
+    name: str
+    duration: int
+    actions: List[ResolvedPair]

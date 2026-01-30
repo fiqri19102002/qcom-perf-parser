@@ -2,12 +2,15 @@ from perf_parser.parsers import boostsconfig, resourceconfigs, targetinfo
 from perf_parser.models import (
     Boost,
     BoostKey,
+    PowerHint,
+    ResolvedPair,
     ResourceConfig,
     ResourceContext,
     ResourceEntry,
     ResourceKey,
     TargetInfo,
 )
+from powerhint_json.generator import generate_powerhint_json
 from perf_parser.resource_resolvers.mapping import resource_resolvers
 from perf_parser.resource_combiners.mapping import resource_combiners
 import sys
@@ -80,6 +83,7 @@ if __name__ == '__main__':
         ((0x00001337, None, None), 'CAMERA_LAUNCH'),
     ]
 
+    generated_powerhints: List[PowerHint] = []
     for bk, powerhint_name in powerhint_map:
         boost_id, boost_type, boost_fps = bk
         boost: Optional[Boost] = next(
@@ -107,7 +111,7 @@ if __name__ == '__main__':
 
             resource_key: ResourceKey = (major, minor)
             if resource_key not in resource_config:
-                print(f"resource 0x{hex(opcode)} is not defined!")
+                print(f'resource 0x{hex(opcode)} is not defined!')
                 continue
             resource: ResourceEntry = resource_config[resource_key]
 
@@ -132,9 +136,17 @@ if __name__ == '__main__':
             for path, value in resolver(ctx):
                 grouped_by_path[(path, resource_key)].append(value)
 
+        actions: List[ResolvedPair] = []
         for (path, resource_key), values in grouped_by_path.items():
             combiner = resource_combiners.get(
                 resource_key, lambda values, path: 'FIXME'.join(values)
             )
             value = combiner(values, path)
-            print(f'({path}, {resource_key}): {value}')
+            print(f'{path}: {value}')
+            actions.append((path, value))
+
+        generated_powerhints.append(
+            PowerHint(name=powerhint_name, duration=boost.timeout, actions=actions)
+        )
+
+    generate_powerhint_json(generated_powerhints, 'powerhint.json')
