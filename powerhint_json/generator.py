@@ -63,6 +63,8 @@ def generate_powerhint_json(powerhints: List[PowerHint], path: str) -> None:
                     if node_path == "/proc/sys/walt/sched_upmigrate" or node_path == "/proc/sys/walt/sched_downmigrate":
                         first, second, _ = current_value.split("\t")
                         current_value = f"{first} {second}"
+                    elif node_path == "/sys/kernel/msm_performance/parameters/cpu_max_freq":
+                        current_value = "0:9999999 1:9999999 2:9999999 3:9999999 4:9999999 5:9999999 6:9999999 7:9999999"
                     node: Node = {
                         'Name': node_name,
                         'Path': node_path,
