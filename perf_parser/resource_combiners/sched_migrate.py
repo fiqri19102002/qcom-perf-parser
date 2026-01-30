@@ -14,7 +14,7 @@ def combine_sched_migrate(values: Iterable[str], path: str) -> str:
         if b is not SCHED_MIGRATE_VALUE_UNSET:
             second = b
 
-    def_first, def_second, _ = subprocess.check_output(
+    def_first, def_second = subprocess.check_output(
         [
             'adb',
             'shell',
@@ -22,7 +22,7 @@ def combine_sched_migrate(values: Iterable[str], path: str) -> str:
             path,
         ],
         text=True,
-    ).split()
+    ).split()[:2]
 
     if first is SCHED_MIGRATE_VALUE_UNSET:
         first = def_first
