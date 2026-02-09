@@ -9,6 +9,8 @@ def combine_sched_migrate(values: List[str], path: str) -> str:
         [
             'adb',
             'shell',
+            'su',
+            '-c',
             'cat',
             path,
         ],

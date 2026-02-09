@@ -10,6 +10,8 @@ def _get_default_value(path: str, values: set[str]) -> str:
         [
             'adb',
             'shell',
+            'su',
+            '-c',
             'cat',
             path,
         ],

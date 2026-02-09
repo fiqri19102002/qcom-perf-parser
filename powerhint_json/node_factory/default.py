@@ -13,6 +13,8 @@ def create_node(name: str, path: str, values: set[str]) -> Node:
             [
                 'adb',
                 'shell',
+                'su',
+                '-c',
                 'cat',
                 path,
             ],
