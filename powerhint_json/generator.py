@@ -17,7 +17,7 @@ def _generate_name(path: str) -> str:
         .replace('/', ' ')
     )
     path_list = path.split()
-    return path[0] + ''.join(i.capitalize() for i in path_list[1:])
+    return path_list[0] + ''.join(i.capitalize() for i in path_list[1:])
 
 
 def generate_powerhint_json(powerhints: List[PowerHint], path: str) -> None:
